@@ -4,8 +4,10 @@ block content
   h1 Add a new driver
   form(action="/drivers" method="POST")
     p
-      input(type="text", name="name")
+      label(for="name") name:
+      input(type="text", name="name", id="name")
     p
-      input(type="number", name="age")
+      label(for="age") age:
+      input(type="number", name="age", id="age")
     p
       button Add a new driver

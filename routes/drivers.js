@@ -28,13 +28,24 @@ router.get("/new", function(req, res, next) {
   res.render("drivers/new");
 });
 
-router.get("/:id", function(req, res, next) {});
+router.get("/:id", function(req, res, next) {
+  db.Driver.findById(req.params.id)
+    .populate('cars')
+    .then(function(driver) {
+      res.render("drivers/show", {driver})
+    })
+    .catch(function(err) {
+      next(err);
+    });
+});
 
 router.get("/:id/edit", function(req, res, next) {
-  db.Driver
+  db.Car
     .findById(req.params.id)
-    .then(function(driver) {
-      res.render("drivers/edit", { driver });
+    .populate('driver')
+    .then(function(car) {
+
+      res.render(`drivers/${driver_id}/cars/${car.id}/edit`, { car });
     })
     .catch(function(err) {
       next(err);
@@ -44,6 +55,7 @@ router.get("/:id/edit", function(req, res, next) {
 router.patch("/:id", function(req, res, next) {
   db.Driver
     .findByIdAndUpdate(req.params.id, req.body)
+    .populate('cars')
     .then(function() {
       res.redirect("/drivers");
     })
@@ -54,9 +66,11 @@ router.patch("/:id", function(req, res, next) {
 
 router.delete("/:id", function(req, res, next) {
   db.Driver
-    .findByIdAndRemove(req.params.id)
-    .then(function() {
-      res.redirect("/drivers");
+    .findById(req.params.id)
+    .then(function(driver){
+      driver.remove().then(function() {
+        res.redirect("/drivers");
+      })
     })
     .catch(function(err) {
       next(err);

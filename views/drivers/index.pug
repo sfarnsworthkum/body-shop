@@ -2,8 +2,10 @@ extends ../base.pug
 
 block content
   h1 See all the drivers
+  a(href=`/drivers/new`) Add a new driver
   for driver in drivers
-    p #{driver.name} &nbsp;
+    p 
+      a(href=`/drivers/${driver.id}`) #{driver.name} &nbsp;
       a(href=`/drivers/${driver.id}/edit`) Edit a driver
       br
       a(href=`/drivers/${driver.id}/cars`) See all #{driver.name}'s cars

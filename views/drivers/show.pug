@@ -1,3 +1,9 @@
 extends ../base.pug
 
 block content
+	ul
+		h1 #{driver.name}'s cars
+		each car in driver.cars
+			li 
+				a( href=`/drivers/${driver.id}/cars/${car.id}`) see that car
+		a(href=`/drivers/${driver.id}/cars/new`) Add new car
